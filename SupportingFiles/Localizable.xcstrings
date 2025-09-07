@@ -1,0 +1,114 @@
+{
+  "sourceLanguage" : "de",
+  "strings" : {
+    "– gesättigte Fette" : {
+
+    },
+    "– Zucker" : {
+
+    },
+    "„calories“" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "„Kalorien“"
+          }
+        }
+      }
+    },
+    "%.1f g" : {
+
+    },
+    "%.2f g" : {
+
+    },
+    "%@" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld / %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "%lld g" : {
+
+    },
+    "%lld kcal" : {
+
+    },
+    "Allgemeine Informationen" : {
+
+    },
+    "Anzahl" : {
+
+    },
+    "Ballaststoffe" : {
+
+    },
+    "Barcode eingeben" : {
+
+    },
+    "Fett" : {
+
+    },
+    "Füge schon bekanntes hinzu" : {
+
+    },
+    "Gramm eingeben" : {
+
+    },
+    "Heute" : {
+
+    },
+    "Hinzufügen" : {
+
+    },
+    "Kalorien" : {
+
+    },
+    "Kohlenhyd." : {
+
+    },
+    "Kohlenhydrate" : {
+
+    },
+    "Logbuch" : {
+
+    },
+    "Makronährstoffe" : {
+
+    },
+    "Menge in g/ml" : {
+
+    },
+    "Nahrungsmittel" : {
+
+    },
+    "Nährwerte pro 100g/ml" : {
+
+    },
+    "Protein" : {
+
+    },
+    "Salz" : {
+
+    },
+    "Scan Barcode" : {
+
+    },
+    "Übersicht" : {
+
+    }
+  },
+  "version" : "1.0"
+}
