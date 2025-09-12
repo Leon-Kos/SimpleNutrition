@@ -35,21 +35,25 @@ struct DayView: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text("\(Int(day.kalorien)) / \(self.getMaxKalorien())")
+                        Text("\(Int(day.kalorien)) / \(self.getMaxKalorien())kcal")
                             .font(.title3)
                             .bold()
-                        Text("\(Int(day.kohlenhydrate)) / \(Int(day.maxKohlenhydrate))")
+                        Text("\(Int(day.kohlenhydrate)) / \(Int(day.maxKohlenhydrate))g")
                             .font(.callout)
                             .bold()
-                        Text("\(Int(day.protein)) / \(Int(day.maxProtein))")
+                        Text("\(Int(day.protein)) / \(Int(day.maxProtein))g")
                             .font(.callout)
                             .bold()
-                        Text("\(Int(day.fett)) / \(Int(day.maxFett))")
+                        Text("\(Int(day.fett)) / \(Int(day.maxFett))g")
                             .font(.callout)
                             .bold()
                     }
                 }
             }
+            Section("Erweitert") {
+                
+            }
+            
             Section("Nahrungsmittel") {
                 ForEach(day.getTracked()) { food in
                     NavigationLink {

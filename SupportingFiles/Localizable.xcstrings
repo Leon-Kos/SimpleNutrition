@@ -24,12 +24,6 @@
     "%.2f g" : {
 
     },
-    "%@" : {
-
-    },
-    "%lld" : {
-
-    },
     "%lld / %lld" : {
       "localizations" : {
         "de" : {
@@ -40,22 +34,42 @@
         }
       }
     },
+    "%lld / %lldg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lldg"
+          }
+        }
+      }
+    },
+    "%lld / %lldkcal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lldkcal"
+          }
+        }
+      }
+    },
     "%lld g" : {
 
     },
     "%lld kcal" : {
 
     },
-    "Allgemeine Informationen" : {
-
-    },
-    "Anzahl" : {
+    "Allgemein" : {
 
     },
     "Ballaststoffe" : {
 
     },
     "Barcode eingeben" : {
+
+    },
+    "Erweitert" : {
 
     },
     "Fett" : {
@@ -92,6 +106,9 @@
 
     },
     "Nahrungsmittel" : {
+
+    },
+    "Nährwerte" : {
 
     },
     "Nährwerte pro 100g/ml" : {

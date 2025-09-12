@@ -113,7 +113,7 @@ struct AddFoodView: View {
                         code: food.code,
                         productName: food.productName,
                         brands: food.brands,
-                        quantity: food.quantity,
+                        quantity: quantityText + "g",
                         categories: food.categories,
                         nutriscoreGrade: food.nutriscoreGrade,
                         imageUrl: food.imageUrl,
@@ -145,7 +145,7 @@ struct AddFoodView: View {
         guard let value else { return 0.0 }
         return value * quantity / 100.0
     }
-    
+
     private func addFood(food: Food) {
         context.insert(food)
         day.addFood(food: food)
