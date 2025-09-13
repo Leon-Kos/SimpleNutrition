@@ -20,36 +20,34 @@ struct SettingsView: View {
         VStack {
             List {
                 Section("Makronährstoffe") {
-                    HStack {
-                        VStack {
-                            Text("Kohlenhyd.")
-                                .font(.title3)
-                            Picker("Kohlenhydrate", selection: $kohlenhydrate) { ForEach(0...500, id: \.self) { Text("\($0) g") } }
-                                .pickerStyle(.wheel)
-                                .frame(height: 150)
-                        }
-                        VStack {
-                            Text("Protein")
-                                .font(.title3)
-                            Picker("Protein", selection: $protein) { ForEach(0...500, id: \.self) { Text("\($0) g") } }
-                                .pickerStyle(.wheel)
-                                .frame(height: 150)
-                        }
-                        VStack {
-                            Text("Fett")
-                                .font(.title3)
-                            Picker("Fett", selection: $fett) { ForEach(0...500, id: \.self) { Text("\($0) g") } }
-                                .pickerStyle(.wheel)
-                                .frame(height: 150)
-                        }
+                    VStack {
+                        Text("Kohlenhydrate")
+                            .font(.headline)
+                        TextField("Kohlenhydrate", value: $kohlenhydrate, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.vertical, 5)
+                        
+                        Text("Protein")
+                            .font(.headline)
+                        TextField("Protein", value: $protein, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.vertical, 5)
+                        
+                        Text("Fett")
+                            .font(.headline)
+                        TextField("Fett", value: $fett, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.vertical, 5)
+                        
                     }
                 }
+                
 
             }
             Button {
-                print(kohlenhydrate)
-                print(protein)
-                print(fett)
                 let new_data = NutritionData(kohlenhydrate: Double(kohlenhydrate), protein: Double(protein), fett: Double(fett))
                 context.insert(new_data)
                 do {

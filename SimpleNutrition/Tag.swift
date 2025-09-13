@@ -24,31 +24,28 @@ class Tag: Identifiable {
     var maxFett: Double
     var maxKalorien: Double
     
+    var fiber: Double
+    var salt: Double
+    var sugar: Double
+    
+    var water: Int
+    
     init(maxK: Double, maxP: Double, maxF: Double) {
         self.date = Date()
         self.kohlenhydrate = 0
         self.protein = 0
         self.fett = 0
+        self.fiber = 0
+        self.salt = 0
+        self.sugar = 0
         self.kalorien = 0
         self.maxKohlenhydrate = maxK
         self.maxProtein = maxP
         self.maxFett = maxF
         self.maxKalorien = maxK * 4 + maxP * 4 + maxF * 9
         self.tracked = []
-    }
-    
-    public func adjustNegative(k: Double, p: Double, f: Double, c: Double) {
-        self.kohlenhydrate -= k;
-        self.protein -= p;
-        self.fett -= f;
-        self.kalorien -= c;
-    }
-    
-    public func adjustPositive(k: Double, p: Double, f: Double, c: Double) {
-        self.kohlenhydrate += k;
-        self.protein += p;
-        self.fett += f;
-        self.kalorien += c;
+        
+        self.water = 0
     }
     
     public func getDateAsString() -> String {
@@ -69,12 +66,18 @@ class Tag: Identifiable {
         self.kohlenhydrate = 0
         self.protein = 0
         self.fett = 0
+        self.fiber = 0
+        self.salt = 0
+        self.sugar = 0
         self.kalorien = 0
         
         for food in tracked {
             self.kohlenhydrate += Double(food.carbohydrates100g ?? 0)
             self.protein += Double(food.proteins100g ?? 0)
             self.fett += Double(food.fat100g ?? 0)
+            self.fiber += Double(food.fiber100g ?? 0)
+            self.salt += Double(food.salt100g ?? 0)
+            self.sugar += Double(food.sugars100g ?? 0)
             self.kalorien += (Double(food.carbohydrates100g ?? 0) * 4) + (Double(food.proteins100g ?? 0) * 4) + (Double(food.fat100g ?? 0) * 9) + (Double(food.fiber100g ?? 0) * 2)
         }
     }
@@ -84,13 +87,19 @@ class Tag: Identifiable {
         self.kohlenhydrate = 0
         self.protein = 0
         self.fett = 0
+        self.fiber = 0
+        self.salt = 0
+        self.sugar = 0
         self.kalorien = 0
         
         for food in tracked {
             self.kohlenhydrate += Double(food.carbohydrates100g ?? 0)
             self.protein += Double(food.proteins100g ?? 0)
             self.fett += Double(food.fat100g ?? 0)
-            self.kalorien += (Double(food.carbohydrates100g ?? 0) * 4) + (Double(food.proteins100g ?? 0) * 4) + (Double(food.fat100g ?? 0) * 9) + Double(food.fiber100g ?? 0) * 2
+            self.fiber += Double(food.fiber100g ?? 0)
+            self.salt += Double(food.salt100g ?? 0)
+            self.sugar += Double(food.sugars100g ?? 0)
+            self.kalorien += (Double(food.carbohydrates100g ?? 0) * 4) + (Double(food.proteins100g ?? 0) * 4) + (Double(food.fat100g ?? 0) * 9) + (Double(food.fiber100g ?? 0) * 2)
         }
         
     }

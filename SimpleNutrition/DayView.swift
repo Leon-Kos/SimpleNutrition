@@ -32,6 +32,12 @@ struct DayView: View {
                         Text("Fett")
                             .font(.callout)
                             .bold()
+                        Text("Ballaststoffe")
+                            .font(.callout)
+                            .bold()
+                        Text("Salz")
+                            .font(.callout)
+                            .bold()
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
@@ -47,13 +53,15 @@ struct DayView: View {
                         Text("\(Int(day.fett)) / \(Int(day.maxFett))g")
                             .font(.callout)
                             .bold()
+                        Text("\(Int(day.fiber))g")
+                            .font(.callout)
+                            .bold()
+                        Text("\(Int(day.salt))g")
+                            .font(.callout)
+                            .bold()
                     }
                 }
             }
-            Section("Erweitert") {
-                
-            }
-            
             Section("Nahrungsmittel") {
                 ForEach(day.getTracked()) { food in
                     NavigationLink {

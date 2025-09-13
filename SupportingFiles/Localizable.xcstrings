@@ -24,16 +24,6 @@
     "%.2f g" : {
 
     },
-    "%lld / %lld" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld / %2$lld"
-          }
-        }
-      }
-    },
     "%lld / %lldg" : {
       "localizations" : {
         "de" : {
@@ -54,10 +44,13 @@
         }
       }
     },
-    "%lld g" : {
+    "%lld kcal" : {
 
     },
-    "%lld kcal" : {
+    "%lldg" : {
+
+    },
+    "%lldml" : {
 
     },
     "Allgemein" : {
@@ -67,9 +60,6 @@
 
     },
     "Barcode eingeben" : {
-
-    },
-    "Erweitert" : {
 
     },
     "Fett" : {
@@ -90,9 +80,6 @@
     "Kalorien" : {
 
     },
-    "Kohlenhyd." : {
-
-    },
     "Kohlenhydrate" : {
 
     },
@@ -103,6 +90,9 @@
 
     },
     "Menge in g/ml" : {
+
+    },
+    "Milliliter" : {
 
     },
     "Nahrungsmittel" : {
@@ -124,6 +114,9 @@
 
     },
     "Übersicht" : {
+
+    },
+    "Wasser" : {
 
     }
   },

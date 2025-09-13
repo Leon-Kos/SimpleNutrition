@@ -26,6 +26,8 @@ struct ContentView: View {
 
     @State var navigationTitle = ""
     
+    @State private var wasser: Int = 0
+    
     var body: some View {
         NavigationStack {
             List {
@@ -44,23 +46,58 @@ struct ContentView: View {
                             Text("Fett")
                                 .font(.callout)
                                 .bold()
+                            Text("Ballaststoffe")
+                                .font(.callout)
+                                .bold()
+                            Text("Salz")
+                                .font(.callout)
+                                .bold()
                         }
                         Spacer()
                         VStack(alignment: .trailing) {
-                            Text("\(Int(currentDay.kalorien)) / \(self.getMaxKalorien())")
+                            Text("\(Int(currentDay.kalorien)) / \(self.getMaxKalorien())kcal")
                                 .font(.title3)
                                 .bold()
-                            Text("\(Int(currentDay.kohlenhydrate)) / \(Int(currentDay.maxKohlenhydrate))")
+                            Text("\(Int(currentDay.kohlenhydrate)) / \(Int(currentDay.maxKohlenhydrate))g")
                                 .font(.callout)
                                 .bold()
-                            Text("\(Int(currentDay.protein)) / \(Int(currentDay.maxProtein))")
+                            Text("\(Int(currentDay.protein)) / \(Int(currentDay.maxProtein))g")
                                 .font(.callout)
                                 .bold()
-                            Text("\(Int(currentDay.fett)) / \(Int(currentDay.maxFett))")
+                            Text("\(Int(currentDay.fett)) / \(Int(currentDay.maxFett))g")
+                                .font(.callout)
+                                .bold()
+                            Text("\(Int(currentDay.fiber))g")
+                                .font(.callout)
+                                .bold()
+                            Text("\(Int(currentDay.salt))g")
                                 .font(.callout)
                                 .bold()
                         }
                     }
+                }
+                Section("Wasser") {
+                    HStack {
+                        Text("Wasser")
+                            .font(.callout)
+                            .bold()
+                        Spacer()
+                        Text("\(Int(currentDay.water))ml")
+                            .font(.callout)
+                            .bold()
+                        
+                    }
+                    HStack {
+                        TextField("Milliliter", value: $wasser, format: .number)
+                            .keyboardType(.numberPad)
+                            .padding(.vertical, 5)
+                        Button {
+                            addWater()
+                        } label: {
+                            Text("Hinzufügen")
+                        }
+                    }
+                    
                 }
                 Section("Nahrungsmittel") {
                     ForEach(currentDay.getTracked()) { food in
@@ -152,6 +189,17 @@ struct ContentView: View {
     private func getMaxKalorien() -> Int {
         let kalorien = Int(currentDay.maxKohlenhydrate * 4 + currentDay.maxProtein * 4 + currentDay.maxFett * 9)
         return kalorien
+    }
+    
+    private func addWater() {
+        currentDay.water += wasser
+        do {
+            try context.save()
+        } catch {
+            print("Fehler in addWasser")
+        }
+        wasser = 0
+        fetchDay()
     }
     
 }
