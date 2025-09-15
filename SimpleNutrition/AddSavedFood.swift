@@ -8,23 +8,21 @@ import SwiftUI
 import SwiftData
 
 
-struct AddFoodView: View {
+struct AddSavedFoodView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
     
     @Query var foods: [Food]
-    @Query var savedFoods: [SavedFood]
     
     
     let day: Tag
-    let food: Food
+    let food: SavedFood
     
     @State private var quantity: Int = 100
     
-    init(day: Tag, food: Food) {
+    init(day: Tag, food: SavedFood) {
         self.day = day
         self.food = food
-        _quantity = State(initialValue: Int(parseQuantity(food.quantity)))
     }
 
     
@@ -132,34 +130,6 @@ struct AddFoodView: View {
                         salt100g: scaled(food.salt100g)
                     )
                     addFood(food: add_food)
-                    
-                    let saved_food = SavedFood(
-                        code: food.code,
-                        productName: food.productName,
-                        brands: food.brands,
-                        quantity: String(quantity) + "g",
-                        categories: food.categories,
-                        nutriscoreGrade: food.nutriscoreGrade,
-                        imageUrl: food.imageUrl,
-                        
-                        energyKcal100g: food.energyKcal100g,
-                        fat100g: food.fat100g,
-                        saturatedFat100g: food.saturatedFat100g,
-                        carbohydrates100g: food.carbohydrates100g,
-                        fiber100g: food.fiber100g,
-                        sugars100g: food.sugars100g,
-                        proteins100g: food.proteins100g,
-                        salt100g: food.salt100g
-                    )
-                    
-                    if !savedFoods.contains(where: { $0.code == saved_food.code }) {
-                        context.insert(saved_food)
-                        do {
-                            try context.save()
-                        } catch {
-                            print("Fehler in saved Foods")
-                        }
-                    }
                     dismiss()
                 } label: {
                     Image(systemName: "checkmark")
@@ -187,29 +157,7 @@ struct AddFoodView: View {
             print("Fehler in addFood()")
         }
     }
-    
-    private func parseQuantity(_ quantity: String?) -> Double {
-        guard let quantity else { return 100 } // Fallback, wenn nil
 
-        // Zahl extrahieren (z. B. "200 g" -> "200")
-        let pattern = "[0-9]+(\\.[0-9]+)?"
-        if let range = quantity.range(of: pattern, options: .regularExpression) {
-            let numberString = String(quantity[range])
-            if let number = Double(numberString) {
-                // Einheit prüfen
-                let lowercased = quantity.lowercased()
-                if lowercased.contains("ml") || lowercased.contains("g") {
-                    return number
-                } else if lowercased.contains("l") {
-                    return number * 1000 // 1 L = 1000 ml
-                }
-                return number
-            }
-        }
-        return 100 // Fallback, wenn keine Zahl gefunden
-    }
-
-    
 }
 
 //#Preview {

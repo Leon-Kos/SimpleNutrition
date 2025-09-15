@@ -14,6 +14,6 @@ struct SimpleNutritionApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Food.self, Tag.self, NutritionData.self])
+        .modelContainer(for: [Food.self, Tag.self, NutritionData.self, SavedFood.self])
     }
 }

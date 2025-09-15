@@ -78,7 +78,7 @@ class Tag: Identifiable {
             self.fiber += Double(food.fiber100g ?? 0)
             self.salt += Double(food.salt100g ?? 0)
             self.sugar += Double(food.sugars100g ?? 0)
-            self.kalorien += (Double(food.carbohydrates100g ?? 0) * 4) + (Double(food.proteins100g ?? 0) * 4) + (Double(food.fat100g ?? 0) * 9) + (Double(food.fiber100g ?? 0) * 2)
+            self.kalorien += Double(food.energyKcal100g ?? 0)
         }
     }
     
@@ -99,7 +99,7 @@ class Tag: Identifiable {
             self.fiber += Double(food.fiber100g ?? 0)
             self.salt += Double(food.salt100g ?? 0)
             self.sugar += Double(food.sugars100g ?? 0)
-            self.kalorien += (Double(food.carbohydrates100g ?? 0) * 4) + (Double(food.proteins100g ?? 0) * 4) + (Double(food.fat100g ?? 0) * 9) + (Double(food.fiber100g ?? 0) * 2)
+            self.kalorien += Double(food.energyKcal100g ?? 0)
         }
         
     }

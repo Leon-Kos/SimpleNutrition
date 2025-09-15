@@ -12,7 +12,7 @@ import AVFoundation
 
 struct ScanView: View {
     @Environment(\.modelContext) var context
-    @Query var foodsArray: [Food]
+    @Query var foodsArray: [SavedFood]
     
     @State private var errorMessage: String?
     @State private var foods: [Food] = []
@@ -59,7 +59,7 @@ struct ScanView: View {
                         Image(systemName: "magnifyingglass")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.accentColor)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .padding(.horizontal)
@@ -70,7 +70,7 @@ struct ScanView: View {
                         Image(systemName: "barcode.viewfinder")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.accentColor)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .padding(.horizontal)
@@ -82,9 +82,9 @@ struct ScanView: View {
                     .padding(.leading)
                     .padding(.top)
                 List {
-                    ForEach(foods) { item in
+                    ForEach(foodsArray) { item in
                         NavigationLink {
-                            AddFoodView(day: day, food: item)
+                            AddSavedFoodView(day: day, food: item)
                         } label: {
                             Text(item.productName ?? "Unbekannt")
                         }
@@ -118,7 +118,7 @@ struct ScanView: View {
                 }
             }
             .onAppear {
-                fetchFood()
+                //fetchFood()
             }
             .sheet(isPresented: $showScanner) {
                 BarcodeScannerView(scannedCode: $scannedCode)
@@ -139,17 +139,15 @@ struct ScanView: View {
         }
     }
     
-    private func fetchFood() {
-        var new_foods: [Food] = []
-        for food in foodsArray {
-            if new_foods.contains(where: { $0.productName ?? "" == food.productName }) {
-                continue
-            } else {
-                new_foods.append(food)
-            }
-        }
-        foods = new_foods
-    }
+//    private func fetchFood() {
+//        for food in foodsArray {
+//            if foods.contains(where: { $0.productName ?? "" == food.productName }) {
+//                continue
+//            } else {
+//                foods.append(food)
+//            }
+//        }
+//    }
 }
 
 //#Preview {
