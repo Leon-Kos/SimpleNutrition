@@ -10,7 +10,7 @@ import AVFoundation
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
-    @Binding var scannedCode: String? // Hier speichern wir das Ergebnis
+    @Binding var scannedCode: String?
 
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: BarcodeScannerView
@@ -26,7 +26,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                let code = metadata.stringValue {
                 DispatchQueue.main.async {
                     self.parent.scannedCode = code
-                    self.parent.presentationMode.wrappedValue.dismiss() // Scanner schließen
+                    self.parent.presentationMode.wrappedValue.dismiss()
                 }
             }
         }

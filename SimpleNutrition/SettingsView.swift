@@ -2,100 +2,115 @@
 //  SettingsView.swift
 //  SimpleNutrition
 //
+//  Created by Leon Kos on 05.04.26.
 //
 
 import SwiftUI
-import SwiftData
 
 struct SettingsView: View {
-    @Environment(\.modelContext) var context
-    @Query var days: [Tag]
-    @Query(sort: \NutritionData.date, order: .reverse) var nutritionData: [NutritionData]
-
-    @State private var kohlenhydrate: Int = 0
-    @State private var protein: Int = 0
-    @State private var fett: Int = 0
+    
+    @Binding var tabState: TabSelection
+    let currentDay: Tag
+    @State private var kohlenhydrate: Double = 0
+    @State private var protein: Double = 0
+    @State private var fett: Double = 0
+    
+    @State private var kalorien: Double = 0
     
     var body: some View {
-        VStack {
-            List {
-                Section("Makronährstoffe") {
-                    VStack {
-                        Text("Kohlenhydrate")
-                            .font(.headline)
-                        TextField("Kohlenhydrate", value: $kohlenhydrate, format: .number)
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.vertical, 5)
-                        
-                        Text("Protein")
-                            .font(.headline)
-                        TextField("Protein", value: $protein, format: .number)
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.vertical, 5)
-                        
-                        Text("Fett")
-                            .font(.headline)
-                        TextField("Fett", value: $fett, format: .number)
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.vertical, 5)
-                        
-                    }
+        List {
+            Section("Tageziel") {
+                HStack {
+                    Text("Kalorien")
+                    Spacer()
+                    Text(String(format: "%.f", kalorien) + " kcal")
+                        .bold()
                 }
-                
-
             }
-            Button {
-                let new_data = NutritionData(kohlenhydrate: Double(kohlenhydrate), protein: Double(protein), fett: Double(fett))
-                context.insert(new_data)
-                do {
-                    try context.save()
-                } catch {
-                    print("Fehler beim Speichern von NutrtionData: \(error)")
+            Section("Makronährstoffe") {
+                HStack {
+                    Text("Kohlenhydrate")
+                        .foregroundStyle(Color.colorKohlenhydrate())
+                        .bold()
+                    Spacer()
+                    TextField("", value: $kohlenhydrate, format: .number)
+                        .frame(maxWidth: 250)
+                        .multilineTextAlignment(.trailing)
+                        .keyboardType(.numberPad)
+                        .onChange(of: kohlenhydrate) {
+                            kalorien = calculateKalrorien()
+                        }
+                    Text("g")
+                        .bold()
                 }
-                
-            } label: {
-                Text("Hinzufügen")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+                HStack {
+                    Text("Protein")
+                        .foregroundStyle(Color.colorProtein())
+                        .bold()
+                    Spacer()
+                    TextField("", value: $protein, format: .number)
+                        .frame(maxWidth: 250)
+                        .multilineTextAlignment(.trailing)
+                        .keyboardType(.numberPad)
+                        .onChange(of: protein) {
+                            kalorien = calculateKalrorien()
+                        }
+                    Text("g")
+                        .bold()
+                }
+                HStack {
+                    Text("Fett")
+                        .foregroundStyle(Color.colorFett())
+                        .bold()
+                    Spacer()
+                    TextField("", value: $fett, format: .number)
+                        .frame(maxWidth: 250)
+                        .multilineTextAlignment(.trailing)
+                        .keyboardType(.numberPad)
+                        .onChange(of: fett) {
+                            kalorien = calculateKalrorien()
+                        }
+                    Text("g")
+                        .bold()
+                }
             }
         }
+        .listStyle(.plain)
+        .listRowSeparator(.hidden)
         .onAppear {
-            for data in nutritionData {
-                if dataDateString(date: data.date) == dayString() {
-                    kohlenhydrate = Int(data.kohlenhydrate)
-                    protein = Int(data.protein)
-                    fett = Int(data.fett)
-                    break
+            kohlenhydrate = currentDay.maxKohlenhydrate
+            protein = currentDay.maxProtein
+            fett = currentDay.maxFett
+            kalorien = currentDay.maxKalorien
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    tabState = .CurrentDay
+                } label: {
+                    Image(systemName: "xmark")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    saveSettings()
+                } label: {
+                    Image(systemName: "checkmark")
                 }
             }
         }
-        
     }
-    
-    private func dataDateString(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let dateString = dateFormatter.string(from: date)
-        return dateString
+    private func saveSettings() {
+        currentDay.adjustNutrients(maxK: Int(kohlenhydrate), maxP: Int(protein), maxF: Int(fett))
+        tabState = .CurrentDay
     }
-    
-    private func dayString() -> String {
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let dateString = dateFormatter.string(from: date)
-        return dateString
+    private func calculateKalrorien() -> Double {
+        return kohlenhydrate * 4 + protein * 4 + fett * 9
     }
-
 }
 
-//#Preview {
-//    SettingsView()
-//}
+#Preview {
+    @Previewable var currentDay = Tag(maxK: 250, maxP: 140, maxF: 80)
+    @Previewable @State var tabState: TabSelection = .Settings
+    SettingsView(tabState: $tabState, currentDay: currentDay)
+}

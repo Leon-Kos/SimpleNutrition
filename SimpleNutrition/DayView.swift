@@ -2,7 +2,6 @@
 //  DayView.swift
 //  SimpleNutrition
 //
-//  Created by Leon Kos on 02.09.25.
 //
 
 import SwiftUI
@@ -12,90 +11,136 @@ struct DayView: View {
     @Environment(\.modelContext) var context
     @Query var foods: [Food]
     
-    let day: Tag
+    let currentDay: Tag
+    let dateHeader: String
+    @State var progress_kcal = 0.0
+    @State var progress_kh = 0.0
+    @State var progress_p = 0.0
+    @State var progress_f = 0.0
     
-    
+    @State private var addFood = false
+        
     var body: some View {
-        List {
-            Section("Übersicht") {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Kalorien")
+        NavigationStack {
+            VStack {
+                OverviewTop(
+                    currentDay: currentDay,
+                    dateHeader: dateHeader,
+                    progress_kcal: $progress_kcal,
+                    progress_kh: $progress_kh,
+                    progress_p: $progress_p,
+                    progress_f: $progress_f
+                )
+                
+                List {
+                    HStack {
+                        Text("Heutige Mahlzeiten")
                             .font(.title3)
                             .bold()
-                        Text("Kohlenhydrate")
-                            .font(.callout)
-                            .bold()
-                        Text("Protein")
-                            .font(.callout)
-                            .bold()
-                        Text("Fett")
-                            .font(.callout)
-                            .bold()
-                        Text("Ballaststoffe")
-                            .font(.callout)
-                            .bold()
-                        Text("Salz")
-                            .font(.callout)
-                            .bold()
-                    }
-                    Spacer()
-                    VStack(alignment: .trailing) {
-                        Text("\(Int(day.kalorien)) / \(self.getMaxKalorien())kcal")
-                            .font(.title3)
-                            .bold()
-                        Text("\(Int(day.kohlenhydrate)) / \(Int(day.maxKohlenhydrate))g")
-                            .font(.callout)
-                            .bold()
-                        Text("\(Int(day.protein)) / \(Int(day.maxProtein))g")
-                            .font(.callout)
-                            .bold()
-                        Text("\(Int(day.fett)) / \(Int(day.maxFett))g")
-                            .font(.callout)
-                            .bold()
-                        Text("\(Int(day.fiber))g")
-                            .font(.callout)
-                            .bold()
-                        Text("\(Int(day.salt))g")
-                            .font(.callout)
-                            .bold()
-                    }
-                }
-            }
-            Section("Nahrungsmittel") {
-                ForEach(day.getTracked()) { food in
-                    NavigationLink {
-                        DayFoodView(food: food)
-                    } label: {
-                        HStack {
-                            Text(food.productName ?? "Unbekannt")
-                            Spacer()
-                            Text("\(food.getKalorien()) kcal")
+                        Spacer()
+                        Button {
+                            addFood = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "plus")
+                            }
+                            .padding(.trailing, 20)
                         }
                     }
+                    .padding(.horizontal, 20)
+                    .hideListEdges()
+                    // Heutige Mahlzeiten - Kompakt
+                    if(currentDay.getTracked().isEmpty) {
+                        Text("Du hast heute noch nichts hinzugefügt. Klicke auf \"+\" um etwas zu scannen")
+                            .padding(.horizontal, 20)
+                            .hideListEdges()
+                            .multilineTextAlignment(.center)
+                            .opacity(0.5)
+                    } else {
+                        ForEach(currentDay.getTracked()) { food in
+                            NavigationLink {
+                                FoodView(day: currentDay, food: food)
+                            } label: {
+                                HStack(alignment: .top) {
+                                    Image(systemName: "fork.knife")
+                                        .font(.system(size: 30))
+                                    VStack {
+                                        HStack(alignment: .top) {
+                                            Text(food.productName ?? "Unbekannt") // Product Name
+                                                .bold()
+                                            Spacer()
+                                            Text("\(Int(food.scaledEnergyKcal ?? 0.0))kcal")
+                                                .bold()
+                                        }
+                                        HStack {
+                                            Text(food.categories ?? "") // Amount
+                                                .opacity(0.5)
+                                            Spacer()
+                                        }
+                                    }
+                                    .swipeActions(edge: .trailing) {
+                                        HStack(spacing: 10) {
+                                            Button(role: .destructive) {
+                                                delete_food(food: food)
+                                                getProgress()
+                                            } label: {
+                                                Image(systemName: "trash")
+                                                    .font(.system(size: 20))
+                                                    .foregroundColor(.red)
+                                            }
+                                        }
+                                    }
+                                }
+                                .padding(.bottom, 10)
+                            }
+                            .hideListEdges()
+                            .padding(.leading, 20)
+                            .padding(.trailing, 20)
+                        }
+                    }
+                    
                 }
-                .onDelete(perform: delete_food)
+                .onAppear {
+                    getProgress()
+                }
+                .listStyle(.plain)
+                
+                Spacer()
             }
-            .navigationTitle(day.getDateAsString())
-            .onAppear {
-
+            .navigationTitle(currentDay.getDateHeader())
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $addFood) {
+                AddSavedFoodView(currentDay: currentDay)
             }
         }
-        
-        
+    }
+
+    private func delete_food(food: Food) {
+        currentDay.removeFood(food: food)
+        //context.delete(food)
+        do {
+            try context.save()
+        } catch {
+            print("Error in delete_Food() in Overview")
+        }
     }
     
-    private func delete_food(at offsets: IndexSet) {
-        day.removeFood(at: offsets)
-    }
-    
-    private func getMaxKalorien() -> Int {
-        let kalorien = Int(day.maxKohlenhydrate * 4 + day.maxProtein * 4 + day.maxFett * 9)
-        return kalorien
+    private func getProgress() {
+        let progress = currentDay.getProgress()
+        progress_kcal = progress["kcal"] ?? 0.0
+        progress_kh = progress["kh"] ?? 0.0
+        progress_p = progress["p"] ?? 0.0
+        progress_f = progress["f"] ?? 0.0
     }
         
 }
 
 //#Preview {
-//    DayView()
+//    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//    let container = try! ModelContainer(for: Tag.self, configurations: config)
+//    let tag = Tag(maxK: 250, maxP: 240, maxF: 70)
+//    
+//    
+//    
+//    DayView(currentDay: tag, dateHeader: tag.getDateHeader(), progress_kcal: 0.0, progress_kh: 0.0, progress_p: 0.0, progress_f: 0.0).modelContainer(container)
 //}

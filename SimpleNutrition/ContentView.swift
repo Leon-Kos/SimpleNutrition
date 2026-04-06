@@ -8,198 +8,161 @@ import SwiftUI
 import SwiftData
 import Foundation
 
+enum TabSelection: Hashable {
+    case CurrentDay, Log, Scan, Erstellen, Settings
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) var context
-    @Query var food: [Food]
     @Query(sort: \Tag.date, order: .reverse) var days: [Tag]
-    @Query(sort: \NutritionData.date, order: .reverse) var nutritionData: [NutritionData]
+    @Query var savedFoods: [SavedFoodsSingleton]
     
-    var data: NutritionData {
-        if let first_data = nutritionData.first {
-            return first_data
-        } else {
-            return NutritionData(kohlenhydrate: 0, protein: 0, fett: 0)
-        }
-    }
+    @State private var savedFoodsArray = []
     
     @State var currentDay: Tag = Tag(maxK: 0, maxP: 0, maxF: 0)
-
-    @State var navigationTitle = ""
     
-    @State private var wasser: Int = 0
+    
+    @State private var tabState: TabSelection = .CurrentDay
+    
+    // Properties needed for BarcodeScanner
+    @State private var scannedCode: String? = nil
+    @State private var selectedFood: FoodResponse?
+    @State private var showDetail = false
+    @State private var errorMessage: String?
+    
+    // Properties to trigger
+    @State private var showAddFood: Bool = false
+    @State private var showCreateFood: Bool = false
     
     var body: some View {
-        NavigationStack {
-            List {
-                Section("Heute") {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Kalorien")
-                                .font(.title3)
-                                .bold()
-                            Text("Kohlenhydrate")
-                                .font(.callout)
-                                .bold()
-                            Text("Protein")
-                                .font(.callout)
-                                .bold()
-                            Text("Fett")
-                                .font(.callout)
-                                .bold()
-                            Text("Ballaststoffe")
-                                .font(.callout)
-                                .bold()
-                            Text("Salz")
-                                .font(.callout)
-                                .bold()
+        TabView(selection: $tabState) {
+            NavigationStack {
+                CurrentDayView(currentDay: currentDay)
+            }
+            .tabItem {
+                Label("", systemImage: "chart.pie")
+            }
+            .tag(TabSelection.CurrentDay)
+            NavigationStack {
+                LogView(days: days)
+            }
+            .tabItem {
+                Label("", systemImage: "long.text.page.and.pencil.fill")
+            }
+            .tag(TabSelection.Log)
+            NavigationStack {
+                BarcodeScannerView(scannedCode: $scannedCode)
+                    .navigationDestination(isPresented: $showDetail) {
+                        if let response = selectedFood {
+                            let food = Food(code: response.code,
+                                            productName: response.productName,
+                                            brands: response.brands,
+                                            quantity: response.quantity,
+                                            categories: response.categories,
+                                            nutriscoreGrade: response.nutriscoreGrade,
+                                            imageUrl: response.imageUrl,
+                                            energyKcal100g: response.energyKcal100g,
+                                            fat100g: response.fat100g,
+                                            saturatedFat100g: response.saturatedFat100g,
+                                            carbohydrates100g: response.carbohydrates100g,
+                                            fiber100g: response.fiber100g,
+                                            sugars100g: response.sugars100g,
+                                            proteins100g: response.proteins100g,
+                                            salt100g: response.salt100g,
+                                            scaledQuantity: Int(response.quantity ?? "0") ?? 0,
+                                            scaledEnergyKcal: Double(response.energyKcal100g ?? 0.0),
+                                            scaledFat: Double(response.fat100g ?? 0.0),
+                                            scaledSaturatedFat: Double(response.saturatedFat100g ?? 0.0),
+                                            scaledCarbohydrates: Double(response.carbohydrates100g ?? 0.0),
+                                            scaledFiber: Double(response.fiber100g ?? 0.0),
+                                            scaledSugars: Double(response.sugars100g ?? 0.0),
+                                            scaledProteins: Double(response.proteins100g ?? 0.0),
+                                            scaledSalt: Double(response.salt100g ?? 0.0),
+                                            
+                            )
+                            AddFoodView(day: currentDay, food: food)
                         }
-                        Spacer()
-                        VStack(alignment: .trailing) {
-                            Text("\(Int(currentDay.kalorien)) / \(self.getMaxKalorien())kcal")
-                                .font(.title3)
-                                .bold()
-                            Text("\(Int(currentDay.kohlenhydrate)) / \(Int(currentDay.maxKohlenhydrate))g")
-                                .font(.callout)
-                                .bold()
-                            Text("\(Int(currentDay.protein)) / \(Int(currentDay.maxProtein))g")
-                                .font(.callout)
-                                .bold()
-                            Text("\(Int(currentDay.fett)) / \(Int(currentDay.maxFett))g")
-                                .font(.callout)
-                                .bold()
-                            Text("\(Int(currentDay.fiber))g")
-                                .font(.callout)
-                                .bold()
-                            Text("\(Int(currentDay.salt))g")
-                                .font(.callout)
-                                .bold()
-                        }
-                    }
-                }
-                Section("Wasser") {
-                    HStack {
-                        Text("Wasser")
-                            .font(.callout)
-                            .bold()
-                        Spacer()
-                        Text("\(Int(currentDay.water))ml")
-                            .font(.callout)
-                            .bold()
                         
                     }
-                    HStack {
-                        TextField("Milliliter", value: $wasser, format: .number)
-                            .keyboardType(.numberPad)
-                            .padding(.vertical, 5)
-                        Button {
-                            addWater()
-                        } label: {
-                            Text("Hinzufügen")
+                    .onChange(of: scannedCode) {
+                        guard let code = scannedCode, !code.isEmpty else { return }
+                        FoodRequest.fetchProduct(code: code) { result in
+                            DispatchQueue.main.async {
+                                switch result {
+                                case .success(let food):
+                                    self.selectedFood = food
+                                    self.showDetail = true
+                                case .failure(let error):
+                                    errorMessage = error.localizedDescription
+                                }
+                            }
                         }
+                        showDetail = false
                     }
-                    
-                }
-                Section("Nahrungsmittel") {
-                    ForEach(currentDay.getTracked()) { food in
-                        NavigationLink {
-                            DayFoodView(food: food)
-                        } label: {
-                            Text(food.productName ?? "Unbekannt")
-                        }
-                    }
-                    .onDelete(perform: delete_food)
-                }
-                Section("Logbuch") {
-                    ForEach(days) { day in
-                        NavigationLink {
-                            DayView(day: day)
-                        } label: {
-                            Text(day.getDateAsString())
-                        }
-                    }
-                    //.onDelete(perform: delete_day)
-                }
             }
-            .navigationTitle(navigationTitle)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        ScanView(day: currentDay)
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Image(systemName: "person")
-                    }
-                }
+            .tabItem {
+                Label("", systemImage: "barcode")
             }
-            .onAppear {
-                fetchDay()
+            .tag(TabSelection.Scan)
+            NavigationStack {
+                AddCustomView(currentDay: currentDay, tabState: $tabState)
             }
-
+            .tabItem {
+                Label("", systemImage: "plus")
+            }
+            .tag(TabSelection.Erstellen)
+            
+            
+            NavigationStack {
+                SettingsView(tabState: $tabState, currentDay: currentDay)
+            }
+            .tabItem {
+                Label("", systemImage: "person")
+            }
+            .tag(TabSelection.Settings)
         }
+        .onAppear {
+            fetchDay()
+            fetchSavedFoods()
+        }
+        
     }
     
-    func delete_food(at offsets: IndexSet) {
-        currentDay.removeFood(at: offsets)
-    }
-    
-    func delete_day(day: Tag) {
-        context.delete(day)
-        do {
-            try context.save()
-        } catch {
-            print("Fehler in delete_day()")
-        }
-    }
-
     private func fetchDay() {
-        for day in days {
-            if day.getDateAsString() == dayString() {
-                currentDay = day
-                if (currentDay.maxKohlenhydrate != data.kohlenhydrate) || (currentDay.maxProtein != data.protein) || (currentDay.maxFett != data.fett) {
-                    currentDay.maxKohlenhydrate = data.kohlenhydrate
-                    currentDay.maxProtein = data.protein
-                    currentDay.maxFett = data.fett
-                }
-                return
+        let tag = Tag(maxK: 0.0, maxP: 0.0, maxF: 0.0)
+        if (tag.getDateHeader() != days.first?.getDateHeader()) {
+            tag.maxKalorien = days.first?.maxKalorien ?? 0.0
+            tag.maxKohlenhydrate = days.first?.maxKohlenhydrate ?? 0.0
+            tag.maxProtein = days.first?.maxProtein ?? 0.0
+            tag.maxFett = days.first?.maxFett ?? 0.0
+            currentDay = tag
+            if(!days.contains(where: { $0.id == tag.id } )) {
+                context.insert(currentDay)
             }
-        }
-        currentDay = Tag(maxK: data.kohlenhydrate, maxP: data.protein, maxF: data.fett)
-        context.insert(currentDay)
-        do {
-            try context.save()
-        } catch {
-            print("Fehler in fetchDay()")
+            do {
+                try context.save()
+            } catch {
+                print("Error in saving a new day")
+            }
+        } else {
+            currentDay = days.first ?? currentDay
         }
     }
     
-    private func dayString() -> String {
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let dateString = dateFormatter.string(from: date)
-        return dateString
-    }
-    
-    private func getMaxKalorien() -> Int {
-        let kalorien = Int(currentDay.maxKohlenhydrate * 4 + currentDay.maxProtein * 4 + currentDay.maxFett * 9)
-        return kalorien
-    }
-    
-    private func addWater() {
-        currentDay.water += wasser
-        do {
-            try context.save()
-        } catch {
-            print("Fehler in addWasser")
+    private func fetchSavedFoods() {
+        if let first = savedFoods.first {
+            savedFoodsArray = first.getSavedFoods()
+        } else {
+            let first = SavedFoodsSingleton()
+            context.insert(first)
+            do {
+                try context.save()
+            } catch {
+                print("Problem in fetchSavedFoods()")
+            }
+            savedFoodsArray = first.getSavedFoods()
         }
-        wasser = 0
-        fetchDay()
+        
     }
     
 }

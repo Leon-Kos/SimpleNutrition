@@ -13,7 +13,7 @@ struct AddFoodView: View {
     @Environment(\.dismiss) var dismiss
     
     @Query var foods: [Food]
-    @Query var savedFoods: [SavedFood]
+    @Query var savedFoods: [SavedFoodsSingleton]
     
     
     let day: Tag
@@ -113,53 +113,8 @@ struct AddFoodView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    let add_food = Food(
-                        code: food.code,
-                        productName: food.productName,
-                        brands: food.brands,
-                        quantity: String(quantity) + "g",
-                        categories: food.categories,
-                        nutriscoreGrade: food.nutriscoreGrade,
-                        imageUrl: food.imageUrl,
-                        
-                        energyKcal100g: scaled(food.energyKcal100g),
-                        fat100g: scaled(food.fat100g),
-                        saturatedFat100g: scaled(food.saturatedFat100g),
-                        carbohydrates100g: scaled(food.carbohydrates100g),
-                        fiber100g: scaled(food.fiber100g),
-                        sugars100g: scaled(food.sugars100g),
-                        proteins100g: scaled(food.proteins100g),
-                        salt100g: scaled(food.salt100g)
-                    )
-                    addFood(food: add_food)
-                    
-                    let saved_food = SavedFood(
-                        code: food.code,
-                        productName: food.productName,
-                        brands: food.brands,
-                        quantity: String(quantity) + "g",
-                        categories: food.categories,
-                        nutriscoreGrade: food.nutriscoreGrade,
-                        imageUrl: food.imageUrl,
-                        
-                        energyKcal100g: food.energyKcal100g,
-                        fat100g: food.fat100g,
-                        saturatedFat100g: food.saturatedFat100g,
-                        carbohydrates100g: food.carbohydrates100g,
-                        fiber100g: food.fiber100g,
-                        sugars100g: food.sugars100g,
-                        proteins100g: food.proteins100g,
-                        salt100g: food.salt100g
-                    )
-                    
-                    if !savedFoods.contains(where: { $0.code == saved_food.code }) {
-                        context.insert(saved_food)
-                        do {
-                            try context.save()
-                        } catch {
-                            print("Fehler in saved Foods")
-                        }
-                    }
+                    //saveAndDismiss()
+                    addFood()
                     dismiss()
                 } label: {
                     Image(systemName: "checkmark")
@@ -178,9 +133,42 @@ struct AddFoodView: View {
         return value * Double(quantity) / 100.0
     }
 
-    private func addFood(food: Food) {
+    private func addFood(/*food: Food*/) {
+        let name = String(food.productName?.prefix(25) ?? "Unbekannt")
+        let food = Food(
+            code: food.code,
+            productName: name,
+            brands: food.brands,
+            quantity: food.quantity,
+            categories: limitCategorySize(categories: food.categories ?? ""),
+            nutriscoreGrade: food.nutriscoreGrade,
+            imageUrl: food.imageUrl,
+            
+            energyKcal100g: food.energyKcal100g,
+            fat100g: food.fat100g,
+            saturatedFat100g: food.saturatedFat100g,
+            carbohydrates100g: food.carbohydrates100g,
+            fiber100g: food.fiber100g,
+            sugars100g: food.sugars100g,
+            proteins100g: food.proteins100g,
+            salt100g: food.salt100g,
+            
+            scaledQuantity: quantity,
+            scaledEnergyKcal: scaled(food.energyKcal100g) ?? 0.0,
+            scaledFat: scaled(food.fat100g) ?? 0.0,
+            scaledSaturatedFat: scaled(food.saturatedFat100g) ?? 0.0,
+            scaledCarbohydrates: scaled(food.carbohydrates100g) ?? 0.0,
+            scaledFiber: scaled(food.fiber100g) ?? 0.0,
+            scaledSugars: scaled(food.sugars100g) ?? 0.0,
+            scaledProteins: scaled(food.proteins100g) ?? 0.0,
+            scaledSalt: scaled(food.salt100g) ?? 0.0
+            
+        )
         context.insert(food)
         day.addFood(food: food)
+        if (!savedFoods.first!.getSavedFoods().contains(where: { $0.code == food.code })) {
+            savedFoods.first!.addSavedFood(food: food)
+        }
         do {
             try context.save()
         } catch {
@@ -190,7 +178,7 @@ struct AddFoodView: View {
     
     private func parseQuantity(_ quantity: String?) -> Double {
         guard let quantity else { return 100 } // Fallback, wenn nil
-
+        
         // Zahl extrahieren (z. B. "200 g" -> "200")
         let pattern = "[0-9]+(\\.[0-9]+)?"
         if let range = quantity.range(of: pattern, options: .regularExpression) {
@@ -208,7 +196,14 @@ struct AddFoodView: View {
         }
         return 100 // Fallback, wenn keine Zahl gefunden
     }
-
+    
+    private func limitCategorySize(categories: String) -> String {
+        if categories == "" { return "" }
+        else {
+            let separated = categories.components(separatedBy: ",")
+            return separated.first ?? ""
+        }
+    }
     
 }
 

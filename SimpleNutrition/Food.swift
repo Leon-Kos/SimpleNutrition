@@ -3,9 +3,10 @@ import SwiftData
 
 @Model
 class Food: Identifiable {
-    var id: String { code }  // Identifiable für SwiftUI Listen
+    
+    var id = UUID()
 
-    var code: String
+    var code: String?
     var productName: String?
     var brands: String?
     var quantity: String?
@@ -21,10 +22,20 @@ class Food: Identifiable {
     var fiber100g: Double?
     var proteins100g: Double?
     var salt100g: Double?
+    
+    var scaledQuantity: Int?
+    var scaledEnergyKcal: Double?
+    var scaledFat: Double?
+    var scaledSaturatedFat: Double?
+    var scaledCarbohydrates: Double?
+    var scaledFiber: Double?
+    var scaledSugars: Double?
+    var scaledProteins: Double?
+    var scaledSalt: Double?
 
     // Initializer
     init(
-        code: String,
+        code: String? = nil,
         productName: String? = nil,
         brands: String? = nil,
         quantity: String? = nil,
@@ -38,7 +49,16 @@ class Food: Identifiable {
         fiber100g: Double? = nil,
         sugars100g: Double? = nil,
         proteins100g: Double? = nil,
-        salt100g: Double? = nil
+        salt100g: Double? = nil,
+        scaledQuantity: Int? = nil,
+        scaledEnergyKcal: Double? = nil,
+        scaledFat: Double? = nil,
+        scaledSaturatedFat: Double? = nil,
+        scaledCarbohydrates: Double? = nil,
+        scaledFiber: Double? = nil,
+        scaledSugars: Double? = nil,
+        scaledProteins: Double? = nil,
+        scaledSalt: Double? = nil
     ) {
         self.code = code
         self.productName = productName
@@ -47,6 +67,7 @@ class Food: Identifiable {
         self.categories = categories
         self.nutriscoreGrade = nutriscoreGrade
         self.imageUrl = imageUrl
+        
         self.energyKcal100g = energyKcal100g
         self.fat100g = fat100g
         self.saturatedFat100g = saturatedFat100g
@@ -55,10 +76,16 @@ class Food: Identifiable {
         self.sugars100g = sugars100g
         self.proteins100g = proteins100g
         self.salt100g = salt100g
+        
+        self.scaledQuantity = scaledQuantity
+        self.scaledEnergyKcal = scaledEnergyKcal
+        self.scaledFat = scaledFat
+        self.scaledSaturatedFat = scaledSaturatedFat
+        self.scaledCarbohydrates = scaledCarbohydrates
+        self.scaledFiber = scaledFiber
+        self.scaledSugars = scaledSugars
+        self.scaledProteins = scaledProteins
+        self.scaledSalt = scaledSalt
     }
     
-    func getKalorien() -> Int {
-        let cal = (self.carbohydrates100g ?? 0) * 4.0 + (self.proteins100g ?? 0) * 4.0 + (self.fat100g ?? 0) * 9.0 + (self.fiber100g ?? 0) * 2.0
-        return Int(cal)
-    }
 }

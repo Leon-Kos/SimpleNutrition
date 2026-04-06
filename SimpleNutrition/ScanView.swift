@@ -12,21 +12,19 @@ import AVFoundation
 
 struct ScanView: View {
     @Environment(\.modelContext) var context
-    @Query var foodsArray: [SavedFood]
     
     @State private var errorMessage: String?
     @State private var foods: [Food] = []
     
     let day: Tag
     
+    //let day = Tag(maxK: 150, maxP: 150, maxF: 80)
+    
     // Fetch Food
     @State private var barcode = ""
     @State private var selectedFood: FoodResponse?
     @State private var showDetail = false
 
-    
-    
-    
     @State private var showScanner = false
     @State private var scannedCode: String? = nil
     
@@ -76,21 +74,7 @@ struct ScanView: View {
                             .padding(.horizontal)
                     }
                 }
-                
-                Text("Füge schon bekanntes hinzu")
-                    .font(.headline)
-                    .padding(.leading)
-                    .padding(.top)
-                List {
-                    ForEach(foodsArray) { item in
-                        NavigationLink {
-                            AddSavedFoodView(day: day, food: item)
-                        } label: {
-                            Text(item.productName ?? "Unbekannt")
-                        }
-                    }
-                }
-                .listStyle(.plain)
+
                 
                 
                 
@@ -113,7 +97,18 @@ struct ScanView: View {
                         fiber100g: response.fiber100g,
                         sugars100g: response.sugars100g,
                         proteins100g: response.proteins100g,
-                        salt100g: response.salt100g)
+                        salt100g: response.salt100g,
+                        scaledQuantity: Int(response.quantity!) ?? 0,
+                        scaledEnergyKcal: Double(response.energyKcal100g ?? 0.0),
+                        scaledFat: Double(response.fat100g ?? 0.0),
+                        scaledSaturatedFat: Double(response.saturatedFat100g ?? 0.0),
+                        scaledCarbohydrates: Double(response.carbohydrates100g ?? 0.0),
+                        scaledFiber: Double(response.fiber100g ?? 0.0),
+                        scaledSugars: Double(response.sugars100g ?? 0.0),
+                        scaledProteins: Double(response.proteins100g ?? 0.0),
+                        scaledSalt: Double(response.salt100g ?? 0.0),
+                    
+                    )
                     AddFoodView(day: day, food: food)
                 }
             }
@@ -135,21 +130,36 @@ struct ScanView: View {
                             }
                         }
                     }
-            }
+                }
         }
     }
-    
-//    private func fetchFood() {
-//        for food in foodsArray {
-//            if foods.contains(where: { $0.productName ?? "" == food.productName }) {
-//                continue
-//            } else {
-//                foods.append(food)
-//            }
-//        }
-//    }
 }
 
 //#Preview {
-//    ScanView(day: Tag())
+//    ScanView()
+//}
+
+
+
+// Barcode Search Action
+//Button(action: {
+//    FoodRequest.fetchProduct(code: barcode) { result in
+//        DispatchQueue.main.async {
+//            switch result {
+//            case .success(let food):
+//                self.selectedFood = food
+//                self.showDetail = true
+//            case .failure(let error):
+//                errorMessage = error.localizedDescription
+//            }
+//        }
+//    }
+//}) {
+//    Image(systemName: "magnifyingglass")
+//        .frame(maxWidth: .infinity)
+//        .padding()
+//        .background(Color.accentColor)
+//        .foregroundColor(.white)
+//        .cornerRadius(10)
+//        .padding(.horizontal)
 //}

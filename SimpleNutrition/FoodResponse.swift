@@ -3,9 +3,10 @@
 //  SimpleNutrition
 //
 //
+import Foundation
 
 struct FoodResponse: Decodable, Identifiable {
-    var id: String { code }
+    var id = UUID()
     let status: Int
     let code: String
     let productName: String?

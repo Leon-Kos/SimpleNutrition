@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
+    "" : {
+
+    },
     "– gesättigte Fette" : {
 
     },
@@ -18,10 +21,16 @@
         }
       }
     },
+    "/ %lldkcal" : {
+
+    },
     "%.1f g" : {
 
     },
     "%.2f g" : {
+
+    },
+    "%lld" : {
 
     },
     "%lld / %lldg" : {
@@ -34,26 +43,32 @@
         }
       }
     },
-    "%lld / %lldkcal" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld / %2$lldkcal"
-          }
-        }
-      }
-    },
     "%lld kcal" : {
 
     },
     "%lldg" : {
 
     },
-    "%lldml" : {
+    "%lldkcal" : {
 
     },
-    "Allgemein" : {
+    "%lldkcal - Ziel: %lldkcal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lldkcal - Ziel: %2$lldkcal"
+          }
+        }
+      }
+    },
+    "%lldmL" : {
+
+    },
+    "+%lld kcal" : {
+
+    },
+    "A–E" : {
 
     },
     "Ballaststoffe" : {
@@ -62,16 +77,44 @@
     "Barcode eingeben" : {
 
     },
+    "davon gesättigt" : {
+
+    },
+    "davon Zucker" : {
+
+    },
+    "Du hast heute noch nichts hinzugefügt. Klicke auf \"+\" um etwas zu scannen" : {
+
+    },
+    "Eigenes Produkt" : {
+
+    },
+    "Fehler" : {
+
+    },
     "Fett" : {
 
     },
-    "Füge schon bekanntes hinzu" : {
+    "für %lld%@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "für %1$lld%2$@"
+          }
+        }
+      }
+    },
+    "g" : {
+
+    },
+    "Gespeicherte Lebensmittel" : {
 
     },
     "Gramm eingeben" : {
 
     },
-    "Heute" : {
+    "Heutige Mahlzeiten" : {
 
     },
     "Hinzufügen" : {
@@ -80,31 +123,64 @@
     "Kalorien" : {
 
     },
-    "Kohlenhydrate" : {
+    "Kategorie" : {
 
     },
-    "Logbuch" : {
+    "kcal" : {
+
+    },
+    "KH" : {
+
+    },
+    "Kohlenhydrate" : {
 
     },
     "Makronährstoffe" : {
 
     },
+    "Marke" : {
+
+    },
+    "Menge ändern" : {
+
+    },
+    "Menge eingeben" : {
+
+    },
     "Menge in g/ml" : {
-
-    },
-    "Milliliter" : {
-
-    },
-    "Nahrungsmittel" : {
 
     },
     "Nährwerte" : {
 
     },
+    "Nährwerte pro 100g" : {
+
+    },
     "Nährwerte pro 100g/ml" : {
 
     },
+    "Name" : {
+
+    },
+    "Nutri-Score" : {
+
+    },
+    "OK" : {
+
+    },
+    "optional" : {
+
+    },
+    "Packungsmenge" : {
+
+    },
+    "Produkt" : {
+
+    },
     "Protein" : {
+
+    },
+    "Proteine" : {
 
     },
     "Salz" : {
@@ -113,10 +189,19 @@
     "Scan Barcode" : {
 
     },
-    "Übersicht" : {
+    "Tageziel" : {
 
     },
     "Wasser" : {
+
+    },
+    "z.B. 100g" : {
+
+    },
+    "z.B. Apfel" : {
+
+    },
+    "Ziel erreicht" : {
 
     }
   },
