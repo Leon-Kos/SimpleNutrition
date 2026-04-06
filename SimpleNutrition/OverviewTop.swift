@@ -29,17 +29,6 @@ struct OverviewTop: View {
         // Overview Top
         NavigationStack {
             VStack {
-//                HStack {
-//                    Text(dateHeader)
-//                        .bold()
-//                    Spacer()
-//                    Button {
-//                        editDay = true
-//                    } label: {
-//                        Image(systemName: "pencil")
-//                    }
-//                }
-//                .padding(.horizontal, 20)
                 ZStack {
                     HStack(spacing: 0) {
                         ZStack {
@@ -139,9 +128,6 @@ struct OverviewTop: View {
                 }
             }
             .frame(width: UIScreen.main.bounds.width)
-            .navigationDestination(isPresented: $editDay) {
-                EditDayView(day: currentDay)
-            }
             
         }
         

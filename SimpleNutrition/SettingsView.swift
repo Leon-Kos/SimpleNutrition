@@ -26,6 +26,21 @@ struct SettingsView: View {
                     Text(String(format: "%.f", kalorien) + " kcal")
                         .bold()
                 }
+//                HStack {
+//                    Text("Wasser")
+//                        .foregroundStyle(Color.colorWasser())
+//                        .bold()
+//                    Spacer()
+//                    TextField("", value: $fett, format: .number)
+//                        .frame(maxWidth: 250)
+//                        .multilineTextAlignment(.trailing)
+//                        .keyboardType(.numberPad)
+//                        .onChange(of: fett) {
+//                            kalorien = calculateKalrorien()
+//                        }
+//                    Text("mL")
+//                        .bold()
+//                }
             }
             Section("Makronährstoffe") {
                 HStack {
@@ -73,6 +88,7 @@ struct SettingsView: View {
                     Text("g")
                         .bold()
                 }
+                
             }
         }
         .listStyle(.plain)

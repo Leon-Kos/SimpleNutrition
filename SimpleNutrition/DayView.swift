@@ -17,12 +17,21 @@ struct DayView: View {
     @State var progress_kh = 0.0
     @State var progress_p = 0.0
     @State var progress_f = 0.0
+    @State var progress_w = 0.0
     
     @State private var addFood = false
         
     var body: some View {
         NavigationStack {
             VStack {
+                HStack {
+                    Text("Übersicht")
+                        .font(.title3)
+                        .bold()
+                    Spacer()
+                }
+                .padding(.leading, 20)
+                    
                 OverviewTop(
                     currentDay: currentDay,
                     dateHeader: dateHeader,
@@ -31,6 +40,16 @@ struct DayView: View {
                     progress_p: $progress_p,
                     progress_f: $progress_f
                 )
+                
+//                HStack {
+//                    Text("Wasser")
+//                        .font(.title)
+//                        .bold()
+//                    Spacer()
+//                }
+//                .padding(.leading, 20)
+//                
+//                WasserOverview(currentDay: currentDay/*, progress_w: $progress_w*/)
                 
                 List {
                     HStack {
@@ -131,6 +150,7 @@ struct DayView: View {
         progress_kh = progress["kh"] ?? 0.0
         progress_p = progress["p"] ?? 0.0
         progress_f = progress["f"] ?? 0.0
+        progress_w = progress["w"] ?? 0.0
     }
         
 }

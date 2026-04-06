@@ -88,17 +88,18 @@ struct LogView: View {
                                         .bold()
                                 }
                                 Spacer()
-                                Divider()
-                                    .frame(width: 1, height: 28)
-                                Spacer()
-                                VStack {
-                                    Text("Wasser")
-                                        .bold()
-                                    Text("\(Int(day.wasser))mL")
-                                        .foregroundStyle(Color.colorWasser())
-                                        .bold()
-                                }
-                                Spacer()
+//                                Spacer()
+//                                Divider()
+//                                    .frame(width: 1, height: 28)
+//                                Spacer()
+//                                VStack {
+//                                    Text("Wasser")
+//                                        .bold()
+//                                    Text("\(Int(day.wasser))mL")
+//                                        .foregroundStyle(Color.colorWasser())
+//                                        .bold()
+//                                }
+//                                Spacer()
                             }
                             .padding(.bottom, 30)
                         }
@@ -120,6 +121,8 @@ struct LogView: View {
                 }
             }
             .listStyle(.plain)
+            .navigationTitle("Logbuch")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     

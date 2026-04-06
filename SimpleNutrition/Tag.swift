@@ -34,6 +34,7 @@ class Tag: Identifiable {
     var progress_kh: Double
     var progress_p: Double
     var progress_f: Double
+    var progress_w: Double
     
     init(maxK: Double, maxP: Double, maxF: Double) {
         self.date = Date()
@@ -46,6 +47,7 @@ class Tag: Identifiable {
         self.progress_kh = 0.0
         self.progress_p = 0.0
         self.progress_f = 0.0
+        self.progress_w = 0.0
     }
     
     public func getDateAsString() -> String {
@@ -158,7 +160,8 @@ class Tag: Identifiable {
             "kcal" : progress_kcal,
             "kh"   : progress_kh,
             "p"    : progress_p,
-            "f"    : progress_f
+            "f"    : progress_f,
+            "w"    : progress_w
         ]
         return progress
     }

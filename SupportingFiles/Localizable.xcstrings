@@ -62,9 +62,6 @@
         }
       }
     },
-    "%lldmL" : {
-
-    },
     "+%lld kcal" : {
 
     },
@@ -72,9 +69,6 @@
 
     },
     "Ballaststoffe" : {
-
-    },
-    "Barcode eingeben" : {
 
     },
     "davon gesättigt" : {
@@ -117,9 +111,6 @@
     "Heutige Mahlzeiten" : {
 
     },
-    "Hinzufügen" : {
-
-    },
     "Kalorien" : {
 
     },
@@ -133,6 +124,9 @@
 
     },
     "Kohlenhydrate" : {
+
+    },
+    "Logbuch" : {
 
     },
     "Makronährstoffe" : {
@@ -186,13 +180,10 @@
     "Salz" : {
 
     },
-    "Scan Barcode" : {
-
-    },
     "Tageziel" : {
 
     },
-    "Wasser" : {
+    "Übersicht" : {
 
     },
     "z.B. 100g" : {
