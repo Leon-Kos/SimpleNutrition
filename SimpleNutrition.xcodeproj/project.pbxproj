@@ -99,7 +99,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0D15A3512E6396EE00427B09 /* Build configuration list for PBXProject "SimpleNutrition NEW" */;
+			buildConfigurationList = 0D15A3512E6396EE00427B09 /* Build configuration list for PBXProject "SimpleNutrition" */;
 			developmentRegion = de;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -325,7 +325,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0D15A3512E6396EE00427B09 /* Build configuration list for PBXProject "SimpleNutrition NEW" */ = {
+		0D15A3512E6396EE00427B09 /* Build configuration list for PBXProject "SimpleNutrition" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0D15A35F2E6396F000427B09 /* Debug */,
