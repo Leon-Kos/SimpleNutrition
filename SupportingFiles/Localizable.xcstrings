@@ -4,10 +4,10 @@
     "" : {
 
     },
-    "– gesättigte Fette" : {
+    " / %lldg" : {
 
     },
-    "– Zucker" : {
+    "·" : {
 
     },
     "„calories“" : {
@@ -21,85 +21,37 @@
         }
       }
     },
-    "/ %lldkcal" : {
-
-    },
-    "%.1f g" : {
-
-    },
-    "%.2f g" : {
-
-    },
     "%lld" : {
 
     },
-    "%lld / %lldg" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld / %2$lldg"
-          }
-        }
-      }
+    "%lld kcal / 100g" : {
+
     },
-    "%lld kcal" : {
+    "%lld Tage" : {
 
     },
     "%lldg" : {
 
     },
-    "%lldkcal" : {
-
-    },
-    "%lldkcal - Ziel: %lldkcal" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lldkcal - Ziel: %2$lldkcal"
-          }
-        }
-      }
-    },
     "+%lld kcal" : {
 
     },
-    "A–E" : {
+    "Eigene Produkte" : {
 
     },
-    "Ballaststoffe" : {
+    "EINTRÄGE" : {
 
     },
-    "davon gesättigt" : {
+    "Ernährungsprotokoll" : {
 
     },
-    "davon Zucker" : {
-
-    },
-    "Du hast heute noch nichts hinzugefügt. Klicke auf \"+\" um etwas zu scannen" : {
-
-    },
-    "Eigenes Produkt" : {
+    "F %lld" : {
 
     },
     "Fehler" : {
 
     },
-    "Fett" : {
-
-    },
-    "für %lld%@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "für %1$lld%2$@"
-          }
-        }
-      }
-    },
-    "g" : {
+    "g / ml" : {
 
     },
     "Gespeicherte Lebensmittel" : {
@@ -108,91 +60,119 @@
     "Gramm eingeben" : {
 
     },
-    "Heutige Mahlzeiten" : {
+    "heute" : {
 
     },
-    "Kalorien" : {
+    "Heute" : {
 
     },
-    "Kategorie" : {
+    "HEUTIGE MAHLZEITEN" : {
+
+    },
+    "K %lld" : {
+
+    },
+    "KALORIEN" : {
+
+    },
+    "KALORIENZIEL" : {
 
     },
     "kcal" : {
 
     },
-    "KH" : {
+    "kcal  ·  %lld kcal/100g" : {
 
     },
-    "Kohlenhydrate" : {
+    "kcal / Tag" : {
+
+    },
+    "Keine Ergebnisse" : {
 
     },
     "Logbuch" : {
 
     },
-    "Makronährstoffe" : {
+    "Löschen" : {
 
     },
-    "Marke" : {
+    "Mahlzeit" : {
 
     },
-    "Menge ändern" : {
+    "MENGE" : {
+
+    },
+    "MENGE ÄNDERN" : {
 
     },
     "Menge eingeben" : {
 
     },
-    "Menge in g/ml" : {
+    "NÄHRWERTE  ·  %lld g / ml" : {
 
     },
-    "Nährwerte" : {
+    "NÄHRWERTE  für %lld%@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "NÄHRWERTE  für %1$lld%2$@"
+          }
+        }
+      }
+    },
+    "NÄHRWERTE PRO 100 g / ml" : {
 
     },
-    "Nährwerte pro 100g" : {
+    "Noch keine Einträge" : {
 
     },
-    "Nährwerte pro 100g/ml" : {
+    "Noch keine Mahlzeiten" : {
 
     },
-    "Name" : {
-
-    },
-    "Nutri-Score" : {
+    "Nutri" : {
 
     },
     "OK" : {
 
     },
-    "optional" : {
+    "P %lld" : {
 
     },
-    "Packungsmenge" : {
+    "Produkt suchen …" : {
 
     },
-    "Produkt" : {
+    "Scanne oder erstelle ein Produkt, um es hier zu sehen." : {
 
     },
-    "Protein" : {
+    "Scannen" : {
 
     },
-    "Proteine" : {
+    "Speichern" : {
 
     },
-    "Salz" : {
+    "Tagesziele anpassen" : {
 
     },
-    "Tageziel" : {
+    "Tippe auf \"+\" um etwas hinzuzufügen." : {
 
     },
-    "Übersicht" : {
+    "verbleibend" : {
 
     },
-    "z.B. 100g" : {
+    "Versuche einen anderen Suchbegriff." : {
 
     },
-    "z.B. Apfel" : {
+    "von %lld kcal" : {
 
     },
-    "Ziel erreicht" : {
+    "WOCHENDURCHSCHNITT" : {
+
+    },
+    "Ziel" : {
+
+    },
+    "Ziele" : {
 
     }
   },

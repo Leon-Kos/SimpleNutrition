@@ -1,137 +1,72 @@
+//import SwiftUI
+//import SwiftData
+//import Foundation
 //
-//  ContentView.swift
-//  SimpleNutrition
+//// OverviewTop is no longer used by DayView (hero card is now inline).
+//// Kept compilable with updated color tokens.
+//struct OverviewTop: View {
+//    @Environment(\.colorScheme) var colorScheme
+//    let currentDay: Tag
+//    let dateHeader: String
+//    @Binding var progress_kcal: Double
+//    @Binding var progress_kh: Double
+//    @Binding var progress_p: Double
+//    @Binding var progress_f: Double
 //
+//    let barWidth   = UIScreen.main.bounds.width * 0.6
+//    let rectHeight = UIScreen.main.bounds.height / 5
 //
-
-import SwiftUI
-import SwiftData
-import Foundation
-
-struct OverviewTop: View {
-    @Environment(\.colorScheme) var colorScheme
-    let currentDay: Tag
-    let dateHeader: String
-    @Binding var progress_kcal: Double
-    @Binding var progress_kh: Double
-    @Binding var progress_p: Double
-    @Binding var progress_f: Double
-    
-    let barWidth = UIScreen.main.bounds.width * 0.6
-    let rectHeight = UIScreen.main.bounds.height / 5
-    
-    let yOffset = 10.0
-    let yOffset_dateHeader = 20.0
-    
-    @State private var editDay = false
-    
-    var body: some View {
-        // Overview Top
-        NavigationStack {
-            VStack {
-                ZStack {
-                    HStack(spacing: 0) {
-                        ZStack {
-                            Circle()
-                                .stroke(Color.colorMode().opacity(0.2), lineWidth: 8)
-                                .padding(.top, 10)
-                                .frame(height: rectHeight * 0.6)
-                            Circle()
-                                .trim(from:0, to: progress_kcal)
-                                .stroke((progress_kcal >= 1.0) ? .red : .green, style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                                .rotationEffect(Angle(degrees: -90))
-                                .padding(.top, 10)
-                                .padding(.trailing, 20)
-                                .padding(.leading, 20)
-                                .frame(height: rectHeight * 0.6)
-                            
-                            VStack(alignment: .center) {
-                                Text("\(Int(currentDay.kalorien))")
-                                    .padding(.top, 10)
-                                    .font(.title3)
-                                    .bold()
-                                Text("/ \(Int(currentDay.maxKalorien))kcal")
-                                    .font(.caption)
-                                    .bold()
-                            }
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            HStack(spacing: 0) {
-                                Text("Kohlenhydrate")
-                                    .bold()
-                                    .foregroundStyle(Color.colorKohlenhydrate())
-                                    .font(.caption)
-                                Spacer()
-                                Text("\(Int(currentDay.kohlenhydrate)) / \(Int(currentDay.maxKohlenhydrate))g")
-                                    .bold()
-                                    .font(.caption)
-                                    .padding(.trailing, 20)
-                                
-                            }
-                            // Progress von Kohlenhydraten
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color.colorMode().opacity(0.2))
-                                    .frame(width: barWidth, height: 5)
-                                RoundedRectangle(cornerRadius: 20)
-                                    .frame(width: barWidth * progress_kh, height: 5)
-                                    .foregroundStyle(Color.colorKohlenhydrate())
-                            }
-                            
-                            HStack(spacing: 0) {
-                                Text("Protein")
-                                    .bold()
-                                    .foregroundStyle(Color.colorProtein())
-                                    .font(.caption)
-                                Spacer()
-                                Text("\(Int(currentDay.protein)) / \(Int(currentDay.maxProtein))g")
-                                    .bold()
-                                    .font(.caption)
-                                    .padding(.trailing, 20)
-                                
-                            }
-                            //Progress Protein
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color.colorMode().opacity(0.2))
-                                    .frame(width: barWidth, height: 5)
-                                RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(Color.colorProtein())
-                                    .frame(width: barWidth * progress_p, height: 5)
-                            }
-                            HStack(spacing: 0) {
-                                Text("Fett")
-                                    .bold()
-                                    .foregroundStyle(Color.colorFett())
-                                    .font(.caption)
-                                Spacer()
-                                Text("\(Int(currentDay.fett)) / \(Int(currentDay.maxFett))g")
-                                    .bold()
-                                    .font(.caption)
-                                    .padding(.trailing, 20)
-                                
-                            }
-                            // Progress Fett
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color.colorMode().opacity(0.2))
-                                    .frame(width: barWidth, height: 5)
-                                RoundedRectangle(cornerRadius: 20)
-                                    .foregroundStyle(Color.colorFett())
-                                    .frame(width: barWidth * progress_f, height: 5)
-                            }
-                        }
-                    }
-                    .frame(width: UIScreen.main.bounds.width)
-                    .padding(.horizontal, 20)
-                }
-            }
-            .frame(width: UIScreen.main.bounds.width)
-            
-        }
-        
-    }
-    
-}
-
+//    var body: some View {
+//        VStack {
+//            HStack(spacing: 0) {
+//                ZStack {
+//                    Circle()
+//                        .stroke(Color.snTint, lineWidth: 8)
+//                        .padding(.top, 10)
+//                        .frame(height: rectHeight * 0.6)
+//                    Circle()
+//                        .trim(from: 0, to: progress_kcal)
+//                        .stroke(
+//                            progress_kcal >= 1.0 ? Color.snWarn : Color.snPrimary,
+//                            style: StrokeStyle(lineWidth: 8, lineCap: .round)
+//                        )
+//                        .rotationEffect(Angle(degrees: -90))
+//                        .padding(.top, 10)
+//                        .padding(.horizontal, 20)
+//                        .frame(height: rectHeight * 0.6)
+//
+//                    VStack(alignment: .center) {
+//                        Text("\(Int(currentDay.kalorien))")
+//                            .padding(.top, 10)
+//                            .font(.title3).bold()
+//                        Text("/ \(Int(currentDay.maxKalorien))kcal")
+//                            .font(.caption).bold()
+//                    }
+//                }
+//
+//                VStack(alignment: .leading) {
+//                    macroRow(label: "Kohlenhydrate", value: currentDay.kohlenhydrate, max: currentDay.maxKohlenhydrate, progress: progress_kh, color: .snCarbs)
+//                    macroRow(label: "Protein",       value: currentDay.protein,       max: currentDay.maxProtein,       progress: progress_p,  color: .snProtein)
+//                    macroRow(label: "Fett",          value: currentDay.fett,          max: currentDay.maxFett,          progress: progress_f,  color: .snFat)
+//                }
+//            }
+//            .frame(width: UIScreen.main.bounds.width)
+//            .padding(.horizontal, 20)
+//        }
+//        .frame(width: UIScreen.main.bounds.width)
+//    }
+//
+//    private func macroRow(label: String, value: Double, max: Double, progress: Double, color: Color) -> some View {
+//        VStack(alignment: .leading, spacing: 2) {
+//            HStack(spacing: 0) {
+//                Text(label).bold().foregroundStyle(color).font(.caption)
+//                Spacer()
+//                Text("\(Int(value)) / \(Int(max))g").bold().font(.caption).padding(.trailing, 20)
+//            }
+//            ZStack(alignment: .leading) {
+//                RoundedRectangle(cornerRadius: 20).fill(Color.snInk.opacity(0.08)).frame(width: barWidth, height: 5)
+//                RoundedRectangle(cornerRadius: 20).frame(width: barWidth * progress, height: 5).foregroundStyle(color)
+//            }
+//        }
+//    }
+//}
